@@ -1,0 +1,52 @@
+岛屿系列题目的核心考点就是用 DFS/BFS 算法遍历二维数组
+
+// 二叉树遍历框架
+void traverse(TreeNode root) {
+    traverse(root.left);
+    traverse(root.right);
+}
+
+// 二维矩阵遍历框架
+void dfs(int[][] grid, int i, int j, boolean[] visited) {
+    int m = grid.length, n = grid[0].length;
+    if (i < 0 || j < 0 || i >= m || j >= n) {
+        // 超出索引边界
+        return;
+    }
+    if (visited[i][j]) {
+        // 已遍历过 (i, j)
+        return;
+    }
+    // 进入节点 (i, j)
+    visited[i][j] = true;
+    dfs(grid, i - 1, j, visited); // 上
+    dfs(grid, i + 1, j, visited); // 下
+    dfs(grid, i, j - 1, visited); // 左
+    dfs(grid, i, j + 1, visited); // 右
+}
+因为二维矩阵本质上是一幅「图」，所以遍历的过程中需要一个 visited 布尔数组防止走回头路，如果你能理解上面这段代码，那么搞定所有岛屿系列题目都很简单。
+优化:
+// 方向数组，分别代表上、下、左、右
+int[][] dirs = new int[][]{{-1,0}, {1,0}, {0,-1}, {0,1}};
+
+void dfs(int[][] grid, int i, int j, boolean[] visited) {
+    int m = grid.length, n = grid[0].length;
+    if (i < 0 || j < 0 || i >= m || j >= n) {
+        // 超出索引边界
+        return;
+    }
+    if (visited[i][j]) {
+        // 已遍历过 (i, j)
+        return;
+    }
+
+    // 进入节点 (i, j)
+    visited[i][j] = true;
+    // 递归遍历上下左右的节点
+    for (int[] d : dirs) {
+        int next_i = i + d[0];
+        int next_j = j + d[1];
+        dfs(grid, next_i, next_j, visited);
+    }
+    // 离开节点 (i, j)
+}

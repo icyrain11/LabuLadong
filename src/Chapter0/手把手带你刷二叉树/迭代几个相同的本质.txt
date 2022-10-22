@@ -1,0 +1,48 @@
+/* 迭代遍历数组 */
+void traverse(int[] arr) {
+    for (int i = 0; i < arr.length; i++) {
+
+    }
+}
+
+/* 递归遍历数组 */
+void traverse(int[] arr, int i) {
+    if (i == arr.length) {
+        return;
+    }
+    // 前序位置
+    traverse(arr, i + 1);
+    // 后序位置
+}
+
+/* 迭代遍历单链表 */
+void traverse(ListNode head) {
+    for (ListNode p = head; p != null; p = p.next) {
+
+    }
+}
+
+/* 递归遍历单链表 */
+void traverse(ListNode head) {
+    if (head == null) {
+        return;
+    }
+    // 前序位置
+    traverse(head.next);
+    // 后序位置
+}
+
+
+
+/*如何倒着打印一条链表呢？*/
+我们可以利用后序递归遍历的方法来解决问题
+
+/* 递归遍历单链表，倒序打印链表元素 */
+void traverse(ListNode head) {
+    if (head == null) {
+        return;
+    }
+    traverse(head.next);
+    // 后序位置
+    print(head.val);
+}

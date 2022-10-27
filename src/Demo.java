@@ -5,29 +5,50 @@ import java.util.*;
  * @version 1.8
  */
 public class Demo {
-    public int lengthOfLongestSubstring(String s) {
-        int left = 0, right = 0;
-        int res = 0;
 
 
-        Map<Character, Integer> window = new HashMap<>();
+    public int[] searchRange(int[] nums, int target) {
+        return new int[]{leftBound(nums, target), rightBound(nums, target)};
+    }
 
-        while (right < s.length()) {
-            char c = s.charAt(right);
-            right++;
-            //更新串口
-            window.put(c, window.getOrDefault(c, 0) + 1);
 
-            //判断左侧串口是否需要收缩
-            while (window.get(c) > 1) {
-                char d = s.charAt(left);
-                left++;
-                //对串口移除
-                window.put(d, window.getOrDefault(d, 0) - 1);
+    //左侧边界
+    public int leftBound(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) {
+                right = mid - 1;
+            } else if (nums[mid] > target) {
+                right = mid - 1;
+            } else if (nums[mid] < target) {
+                left = mid + 1;
             }
-
-            res = Math.max(res, right - left);
         }
-        return res;
+        // 此时 left - 1 索引越界
+        if (left - 1 < 0) return -1;
+        // 判断一下 nums[left] 是不是 target
+        return nums[left - 1] == target ? (left - 1) : -1;
+    }
+
+    //右侧边界
+    public int rightBound(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) {
+                left = mid + 1;
+            } else if (nums[mid] > target) {
+                right = mid - 1;
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            }
+        }
+
+        if (left == nums.length) {
+            return -1;
+        }
+        return nums[left - 1] == target ? left - 1 : -1;
     }
 }

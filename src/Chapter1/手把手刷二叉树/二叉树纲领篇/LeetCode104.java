@@ -36,19 +36,31 @@ public class LeetCode104 {
         return res;
     }
 
-    public void traverse(TreeNode root) {
+//    public void traverse(TreeNode root) {
+//        if (root == null) {
+//            return;
+//        }
+//        depth++;
+//        if (root.left == null && root.right == null) {
+//            //到达叶子节点更新深度
+//            res = Math.max(res, depth);
+//        }
+//
+//        traverse(root.left);
+//        traverse(root.right);
+//        //后序位置
+//        depth--;
+//    }
+
+    //后序
+    public int traverse(TreeNode root) {
         if (root == null) {
-            return;
-        }
-        depth++;
-        if (root.left == null && root.right == null) {
-            //到达叶子节点更新深度
-            res = Math.max(res, depth);
+            return 0;
         }
 
-        traverse(root.left);
-        traverse(root.right);
-        //后序位置
-        depth--;
+        int left = traverse(root.left);
+        int right = traverse(root.right);
+
+        return Math.max(left, right) + 1;
     }
 }

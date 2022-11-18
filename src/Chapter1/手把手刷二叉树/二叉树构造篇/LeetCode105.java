@@ -87,6 +87,7 @@ public class LeetCode105 {
 
         //左子树大小
         int leftSize = index - inStart;
+
         root.left = build(preorder, preStart + 1, preStart + leftSize,
                 inorder, inStart, index - 1);
         root.right = build(preorder, preStart + leftSize + 1, preEnd,

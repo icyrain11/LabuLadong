@@ -6,36 +6,68 @@ import java.util.*;
  */
 public class Demo {
 
+    class Merge {
+        //临时数组
+        private int[] temp;
 
-    public String smallestSubsequence(String s) {
-        Stack<Character> stack = new Stack<>();
-        boolean[] instack = new boolean[256];
-        int[] count = new int[256];
-        for (int i = 0; i < s.length(); i++) {
-            count[s.charAt(i)]++;
+        public int count = 0;
+
+        public void sort(int[] nums) {
+            int n = nums.length;
+            temp = new int[n];
+            sort(nums, 0, n - 1);
         }
 
-        for (char c : s.toCharArray()) {
-            count[c]--;
-
-            if (instack[c]) {
-                continue;
+        private void sort(int[] nums, int lo, int hi) {
+            if (lo == hi) {
+                return;
             }
-            while (!stack.isEmpty() && stack.peek() > c) {
-                if (count[stack.peek()] == 0) {
-                    break;
+
+            int mid = lo + (hi - lo) / 2;
+            sort(nums, lo, mid);
+            sort(nums, mid + 1, hi);
+            merge(nums, lo, mid, hi);
+        }
+
+        private void merge(int[] nums, int lo, int mid, int hi) {
+            //存入临时数组
+            for (int i = lo; i <= hi; i++) {
+                temp[i] = nums[i];
+            }
+
+
+            // 进行效率优化，维护左闭右开区间 [mid+1, end) 中的元素乘 2 小于 nums[i]
+            // 为什么 end 是开区间？因为这样的话可以保证初始区间 [mid+1, mid+1) 是一个空区间
+            int end = mid + 1;
+            for (int i = lo; i <= mid; i++) {
+                // nums 中的元素可能较大，乘 2 可能溢出，所以转化成 long
+                while (end <= hi && (long) nums[i] > (long) nums[end] * 2) {
+                    end++;
                 }
-                instack[stack.pop()] = false;
+                count += end - (mid + 1);
             }
-            stack.push(c);
-            instack[c] = true;
 
+
+            int i = lo, j = mid + 1;
+            for (int p = lo; p <= hi; p++) {
+                if (i == mid + 1) {
+                    nums[p] = temp[j++];
+                } else if (j == hi + 1) {
+                    nums[p] = temp[i++];
+                } else if (temp[i] > temp[j]) {
+                    nums[p] = temp[j++];
+                } else {
+                    nums[p] = temp[i++];
+                }
+            }
         }
-        StringBuilder sb = new StringBuilder();
-        while (!stack.isEmpty()) {
-            sb.append(stack.pop());
+
+        public int reversePairs(int[] nums) {
+            // 执行归并排序
+            sort(nums);
+            return count;
         }
-        return sb.reverse().toString();
     }
+
 
 }

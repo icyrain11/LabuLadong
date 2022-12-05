@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class LeetCode6248 {
 
-    //TODO 没学会好难啊
+    //TODO 没学会好难啊转化数组明天去问一问
     public int countSubarrays(int[] nums, int k) {
         int pos = 0, n = nums.length;
         while (nums[pos] != k) {

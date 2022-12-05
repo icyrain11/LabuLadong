@@ -73,8 +73,6 @@ public class LeetCode912 {
             }
         }
 
-
-
         private static void swap(int[] nums, int i, int j) {
             int temp = nums[i];
             nums[i] = nums[j];
